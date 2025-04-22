@@ -1,0 +1,362 @@
+/*/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.chat-input {
+    border-top: 2px solid #e0e0e0;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+}
+
+.container {
+    max-width: 60vw;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    max-height: 49vh;
+}
+
+#chatMessages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+#chatMessages::-webkit-scrollbar-track { background: transparent; }
+#chatMessages::-webkit-scrollbar { width: 6px; }
+#chatMessages::-webkit-scrollbar-thumb {
+    background-color: #5A1EBA;
+    border-radius: 4px;
+    background-clip: content-box;
+}
+
+.chat-message {
+  padding: 10px;
+  background-color: #dfe0e1;
+  border-radius: 6px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  word-break: break-word;
+  display: inline-block;
+  white-space: pre-wrap;
+  max-width: 80%;
+}
+
+.user-message {
+  background-color: #5A1EBA;
+  color: white;
+  align-self: flex-end;
+  border-radius: 12px 12px 0 12px;
+  margin-left: auto;
+}
+
+.system-message {
+  background-color: white;
+  color: black;
+  align-self: flex-start;
+  border-radius: 12px 12px 12px 0;
+  margin-right: auto;
+  border: 2px solid #5A1EBA;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 1.1em;
+}
+
+/* Welcome Screen */
+.welcome-screen {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.welcome-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.welcome-content h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.welcome-content p {
+    margin-bottom: 15px;
+    color: #34495e;
+}
+
+/* Simulator Screen */
+.simulator-screen {
+    padding: 20px;
+}
+
+.simulator-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.simulator-header h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.form-section {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.form-section h3 {
+    margin-bottom: 15px;
+    color: #5A1EBA;
+}
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    cursor: pointer;
+}
+
+input[type="range"] {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.info-tooltip {
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #5A1EBA;
+    font-weight: bold;
+}
+
+.tooltip-content {
+    display: none;
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    border-left: 4px solid #5A1EBA;
+}
+
+#userInput {
+    width: 100%;
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 0px solid #5A1EBA;
+    border-radius: 20px;
+    background-color: #f4f4f4;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+    resize: none;
+    overflow-y: auto;
+    line-height: 1.4;
+}
+
+/* 设置 placeholder 字号为 16pt */
+#userInput::placeholder {
+    color: #909090;
+    opacity: 1;
+    font-size: 1em;
+}
+
+#userInput::-webkit-scrollbar-track { background: transparent; }
+#userInput::-webkit-scrollbar { width: 6px; }
+#userInput::-webkit-scrollbar-thumb {
+    background-color: #5A1EBA;
+    border-radius: 4px;
+    background-clip: content-box;
+}
+
+/* Buttons */
+.btn {
+    background-color: #5A1EBA;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.btn:hover {
+    background-color: #4a18a0;
+}
+
+.navigation {
+    text-align: right;
+    margin-top: 30px;
+}
+
+.close-tooltip {
+    margin-top: 10px;
+}
+
+.close-tooltip:hover {
+    background-color: #5a1eba;
+    color: white;
+}
+
+/* Results Screen */
+.results-screen {
+    padding: 30px;
+    text-align: center;
+}
+
+.results-screen h2 {
+    margin-bottom: 30px;
+    color: #2c3e50;
+}
+
+#resultsContent {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.top-bar {
+  display: flex;
+  height: 80px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0; /* 不加内边距可使 left/right 紧贴边缘 */
+  background-color: #f5f7fa;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.top-bar-left{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+
+
+.top-bar-right {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.top-bar-center {
+  flex: 1;
+  display: flex;
+  justify-content: space-evenly; /* 平均分布按钮 */
+  align-items: center;
+  margin-left:100px;
+  margin-right: 0px;
+}
+
+.top-btn-current {
+  font-size: 28px;
+  padding: 8px 15px;
+  background-color: #5A1EBA;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.top-btn {
+  font-size: 28px;
+  padding: 8px 15px;
+  color: black;
+  background-color: #f5f7fa;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.top-btn:hover {
+  background-color: #4a18a0;
+  color: white;
+}
+
+.custom-alert-box {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  border: 2px solid #5A1EBA;
+  padding: 20px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+  z-index: 1055;
+  border-radius: 10px;
+  max-width: 300px;
+  text-align: left;
+  font-size: 1rem;
+  color: #333;
+}
+
+#avatar-button {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    cursor: pointer;  /* 保留交互反馈 */
+}
+
+
+
+*/
