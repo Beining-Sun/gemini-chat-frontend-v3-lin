@@ -26,9 +26,9 @@
 
         <!-- 中间按钮组 -->
         <div class="top-bar-center">
-            <button class="top-btn">Idea Analysis</button>
+            <button class="top-btn" id="idea-btn">Idea Analysis</button>
             <button class="top-btn-current">KPI & Risks</button>
-            <button class="top-btn">Negotiator</button>
+            <button class="top-btn" id="negotiator-btn">Negotiator</button>  
         </div>
 
         <!-- 右侧 SVG 占位（圆形） -->
@@ -196,6 +196,16 @@ function hideCustomAlert() {
 
 document.getElementById("avatar-button").addEventListener("click", () => {
     showCustomAlert(industry, region, audience);
+});
+
+document.getElementById("negotiator-btn").addEventListener("click", () => {
+  const url = https://beining-sun.github.io/gemini-chat-frontend-v3-sun/?industry=${industry}&region=${region}&audience=${audience};
+  window.location.href = url;
+});
+
+document.getElementById("idea-btn").addEventListener("click", () => {
+  const url = https://beining-sun.github.io/gemini-chat-frontend-v3-zhao;
+  window.location.href = url;
 });
 </script>
 </html>
