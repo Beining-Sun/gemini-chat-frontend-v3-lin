@@ -2,6 +2,8 @@
 const GEMINI_API_KEY = "AIzaSyCo1NhsZBJg5Yloi5HcrdeMnkNGrSloJ9E";
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
+let chat_strArray = []; // 记录和AI助手的聊天历史, 在按restartBtn的时候要清空
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
@@ -26,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const userInput = document.getElementById('userInput');
     const sendBtn = document.getElementById('sendBtn');
 
+
     // Event Listeners
     startBtn.addEventListener('click', startSimulation);
     nextBtn.addEventListener('click', showResults);
@@ -46,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 sendBtn.addEventListener('click', sendMessage);
 userInput.addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
+        e.preventDefault();
         sendMessage();
     }
 });
@@ -102,13 +106,35 @@ userInput.addEventListener('keypress', function(e) {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-     function restartSimulation() {
+    function restartSimulation() {
         resultsScreen.style.display = 'none';
         chatScreen.style.display = 'block';
     // Add welcome message from AI
-    addAIMessage("Welcome back! I'm your AI Entrepreneur Advisor. How can I help you with your business strategy today?");
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    // addAIMessage("Welcome back! I'm your AI Entrepreneur Advisor. How can I help you with your business strategy today?");
+        sendMessage(`You are an AI Entrepreneur Advisor. 
+            Your mission is to answer any questions about my business strategy. 
+
+            Please tell me the following two things. 
+            (Directly answer my question. 
+            Don't say anything else before your answer expect for stating that you have checked the simulation result and you are going to give me recommendations on KPI goals and expected risks. You are free to rephrase.
+            Maintain highly organized.
+            At the end of your response, please convey the idea that you are ready to explain if I don't understand anything)
+            
+            1. what KPI goal should I set for my start-up business? 
+            2. what risks will I be expecting? 
+
+            By the way, below is some information about my start-up business and some comments from another AI assistant.\n\n`+resultsContent.innerHTML);
+        
+        chat_strArray = ['{User}\n'+`You are an AI Entrepreneur Advisor. 
+            Your mission is to answer any questions about my business strategy. 
+
+            Please tell me the following two things
+            1. what KPI goal should I set for my start-up business? 
+            2. what risks will I be expecting? 
+
+            By the way, below is some information about my start-up business and some comments from another AI assistant.\n\n`+resultsContent.innerHTML];
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     function toggleFundingTooltip() {
         fundingTooltip.style.display = fundingTooltip.style.display === 'block' ? 'none' : 'block';
@@ -252,11 +278,16 @@ function addUserMessage(text) {
 }
 
 
-async function sendMessage() {
-    const message = userInput.value.trim();
+async function sendMessage(arg_message='') {
+    const message = arg_message === '' ? userInput.value.trim() : arg_message;
+
     if (!message) return;
 
-    addUserMessage(message);
+    if (arg_message === '') {
+        addUserMessage(message);  // 如果参数为空字符串，调用 addUserMessage()
+        chat_strArray.push('{User}\n'+message);
+    }
+
     userInput.value = '';
     
     const thinkingMsg = addAIMessage("AI is thinking...");
@@ -268,7 +299,17 @@ async function sendMessage() {
             body: JSON.stringify({
                 contents: [{
                     parts: [{
-                        text: `Respond in English ONLY, do not use any other language: ${message}`
+                        text: `You are an AI Entrepreneur Advisor. 
+                        Your mission is to answer any questions about my business strategy. 
+
+                        Respond in English ONLY, do not use any other language.
+                        Below is my message.
+
+                        [${message}]
+
+                        By the way, below is the chat history between you and me. 
+
+                        [${chat_strArray}]`
                     }]
                 }],
                 safetySettings: [ // 增加安全设置
@@ -278,8 +319,7 @@ async function sendMessage() {
                     }
                 ],
                 generationConfig: { // 增加生成配置
-                    temperature: 0.5,
-                    maxOutputTokens: 200
+                    temperature: 0.5
                 }
             })
         });
@@ -294,8 +334,10 @@ async function sendMessage() {
         if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
             throw new Error("Invalid API response structure");
         }
-        
-        thinkingMsg.textContent = data.candidates[0].content.parts[0].text;
+
+        const parsedHTML = marked.parse(data.candidates[0].content.parts[0].text);
+        thinkingMsg.innerHTML = parsedHTML.slice(0, -1);
+        chat_strArray.push('{AI Entrepreneur Advisor}\n'+thinkingMsg.textContent);
     } catch (error) {
         console.error("API error details:", error);
         thinkingMsg.textContent = `Service temporarily unavailable (${error.message})`;
