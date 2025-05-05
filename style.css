@@ -83,6 +83,12 @@ body {
   border: 2px solid #5A1EBA;
 }
 
+.system-message ul,
+.system-message ol {
+  padding-left: 1.2em;
+  margin-left: 0;
+}
+
 header {
     text-align: center;
     margin-bottom: 30px;
@@ -267,7 +273,6 @@ input[type="range"] {
 .top-bar {
   display: flex;
   height: 80px;
-  font-family: system-ui;
   justify-content: space-between;
   align-items: center;
   padding: 0 0; /* 不加内边距可使 left/right 紧贴边缘 */
@@ -354,10 +359,10 @@ input[type="range"] {
     background-color: transparent;
     border: none;
     box-shadow: none;
-    padding: 0;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;  /* 保留交互反馈 */
 }
-
 
 
 
